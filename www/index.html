@@ -188,6 +188,15 @@ sidebar &lt;- function(...) {
   </div>
 </div>
 
+<script>
+// snippet required to activate shiny outputs, since slides are hidden
+// thanks to @jcheng
+$('slide').on('slideenter', function(){
+  $(this).trigger('shown');
+})
+</script>
+   
+
   </article>
   <!-- Presenter Notes -->
 </slide>
@@ -246,7 +255,6 @@ sidebar &lt;- function(...) {
     $("[rel='tooltip']").tooltip(); 
   });  
   </script>  
-  <script src="shared/jquery.js" type="text/javascript"></script>
   <script src="shared/shiny.js" type="text/javascript"></script>
   <script src="shared/slider/js/jquery.slider.min.js"></script>
   <script src="shared/bootstrap/js/bootstrap.min.js"></script>

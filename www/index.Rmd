@@ -110,4 +110,11 @@ sidebar(
 )
 ```
 
+<script>
+// snippet required to activate shiny outputs, since slides are hidden
+// thanks to @jcheng
+$('slide').on('slideenter', function(){
+  $(this).trigger('shown');
+})
+</script>
    
