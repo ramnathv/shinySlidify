@@ -1,0 +1,113 @@
+---
+title       : Shiny App in  a Slidify Deck
+author      : Ramnath Vaidyanathan
+framework   : io2012
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [bootstrap, shiny]       # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+github      : {user: ramnathv, repo: shinySlidify}
+---
+
+## Introduction
+
+This is a demo of how to add multiple Shiny apps to a Slidify deck. I hope to document this better, but for now the basic idea is to put the UI as a slide, wrapped in the utility function `sidebar`, and the server code as an R file named `app*.R` in the `apps` folder.
+
+Slidify the deck and use `runApp` to run the Shiny application!
+
+```{r}
+library(shiny); library(knitr)
+opts_chunk$set(echo = F, results = 'asis', comment = NA, cache = FALSE)
+sidebar <- function(...){
+  cat(as.character(div(class = 'row-fluid', ...)))
+}
+```
+
+<style>body{background-color: black;}</style>
+
+---
+
+## Example 1: DistPlot
+
+```{r}
+sidebar(
+   sidebarPanel(
+      sliderInput("obs",  "", 0, 1000, 500)
+   ),
+   mainPanel(
+      plotOutput("distPlot")
+   )
+)
+```
+
+<div class='alert alert-info'>
+<p>For some reason, the plot doesn't load at first sometimes. Clicking `Inspect Element` seems to activate its rendering.</p>
+</div>
+
+
+---
+
+## Example 2: Probability Distributions
+
+```{r}
+sidebar(
+  sidebarPanel(
+    selectInput("dist", "Distribution:", list(
+      "Normal" = "norm", 
+      "Exponential" = "exp", 
+      "Uniform" = "unif",
+      "Log-Normal" = "lnorm")
+    ),
+    numericInput('n', 'Number of Observations', value = 500, min = 1, max = 1000)
+  ),
+  mainPanel(
+    plotOutput(outputId = "plot1", height = "300px")
+  )
+)
+```
+
+<div class='alert alert-info'>
+<p>For some reason, the plot doesn't load at first sometimes. Clicking `Inspect Element` seems to activate its rendering.</p>
+</div>
+
+
+---
+
+## Example 3: Interactive table
+
+```{r}
+sidebar(
+  sidebarPanel(
+    checkboxInput(inputId = "pageable", label = "Pageable"),
+    conditionalPanel(
+     "input.pageable==true",
+     numericInput(inputId = "pagesize",
+     label = "Countries per page",10)
+    )
+  ),
+  mainPanel(
+   htmlOutput("myTable")
+  )
+)
+```
+
+---
+
+## Example 4: Animated Geo Chart
+
+
+```{r}
+sidebar(
+  sidebarPanel(
+    sliderInput("Year", "Election year to be displayed:", 
+      min=1932, max=2012, value=2012,  step=4,
+      format="###0",animate=TRUE)
+  ),
+  mainPanel(
+    h3(textOutput("year")),
+    htmlOutput("gvis")
+  )
+)
+```
+
+   
